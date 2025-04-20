@@ -2,6 +2,7 @@ import copy
 from city import City
 from strategy import Strategy
 import matplotlib.pyplot as plt
+import numpy as np
 
 class Sensitivity():
     def __init__(self, strategy: Strategy, properties: list[str]):
@@ -46,6 +47,37 @@ class Sensitivity():
         plt.grid(True)
         plt.show()
 
+    def tornado_chart(self):
+        num_properties = len(self.properties)
+
+        fig, (ax_left, ax_right) = plt.subplots(ncols=num_properties)
+
+        for property in self.properties:
+
+            base_value = getattr(self.strategy.city, property)
+            x_values = self.get_variations_array(base_value, 10, 0.10)
+            x_values_left = x_values[:len(x_values)//2]
+            strategies = self.get_strategies_array(x_values_left, property)
+            y_values_left = [strategy.calculate_cost() for strategy in strategies]
+
+            x_values_right = x_values[len(x_values)//2:]
+            strategies = self.get_strategies_array(x_values_right, property)
+            y_values_right = [strategy.calculate_cost() for strategy in strategies]
+
+            ax_left.barh(x_values_left, y_values_left, align="center", facecolor="cornflowerblue")
+
+            ax_left.set_yticks(x_values_left)
+
+            ax_left.set_xlabel("Hours spent")
+
+            ax_left.invert_xaxis()
+
+            ax_right.barh(x_values_right, y_values_right, align="center", facecolor="lemonchiffon")
+
+            ax_right.set_yticks(x_values_right)
+
+        plt.show()
+
 if __name__ == "__main__":
     city = City(
         name="Springfield",
@@ -85,6 +117,10 @@ if __name__ == "__main__":
 
     # sensitivity = Sensitivity(strategy=strategy, properties=["cost_leak", "cost_downtime_bs"])
 
-    sensitivity = Sensitivity(strategy=strategy, properties=["prob_breach", "prob_leak"])
+    sensitivity = Sensitivity(strategy=strategy, properties=["prob_breach", "prob_leak", "prob_bs"])
 
-    sensitivity.plot_sensitivities()
+    # sensitivity = Sensitivity(strategy=strategy, properties=["num_employees"])
+
+    # sensitivity.plot_sensitivities()
+
+    sensitivity.tornado_chart()
