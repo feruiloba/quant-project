@@ -1,0 +1,249 @@
+{
+  "id": "a1992ab4-1f78-b0af-d03f-1f479a598d59",
+  "childEdges": [
+    {
+      "id": "69544059-4100-947c-71bd-240178d728fc",
+      "name": "Yes",
+      "probability": "0.4",
+      "payoff": [
+        "0",
+        0
+      ],
+      "childNode": {
+        "id": "8e292f42-9153-581a-7d14-e5770326e910",
+        "childEdges": [
+          {
+            "id": "04191f2c-8e4a-f643-b5b2-ba66693d7cf2",
+            "name": "Yes",
+            "payoff": [
+              "-11500000",
+              0
+            ],
+            "childNode": {
+              "id": "4f18c706-8041-903a-6caa-67d68b44f3d7",
+              "childEdges": [],
+              "name": "",
+              "code": "",
+              "expressionScope": {},
+              "folded": false,
+              "location": {
+                "x": 320,
+                "y": 20
+              },
+              "type": "terminal"
+            }
+          },
+          {
+            "id": "733c2f24-f856-dd8a-9620-e33b88147cfa",
+            "name": "No",
+            "payoff": [
+              "-30000000",
+              0
+            ],
+            "childNode": {
+              "id": "47d5524a-0df6-eb08-56e3-f110c4d36f53",
+              "childEdges": [],
+              "name": "",
+              "code": "",
+              "expressionScope": {},
+              "folded": false,
+              "location": {
+                "x": 320,
+                "y": 95
+              },
+              "type": "terminal"
+            }
+          }
+        ],
+        "name": "Hire Batman?",
+        "code": "",
+        "expressionScope": {},
+        "folded": false,
+        "location": {
+          "x": 170,
+          "y": 57.5
+        },
+        "type": "decision"
+      }
+    },
+    {
+      "id": "a2240c6d-01df-d763-9ba9-1755b706ecd0",
+      "name": "No",
+      "probability": "#",
+      "payoff": [
+        0,
+        0
+      ],
+      "childNode": {
+        "id": "92ed9e2d-d2d6-ce97-78f3-10e8a5cc53f6",
+        "childEdges": [
+          {
+            "id": "b7ca4307-d1a7-74a2-5dda-929047b0b099",
+            "name": "Yes",
+            "payoff": [
+              "-30000000",
+              0
+            ],
+            "childNode": {
+              "id": "0a05d6cc-9a50-af62-ba95-06bcdc70043e",
+              "childEdges": [
+                {
+                  "id": "a1a0f228-5118-516d-de81-ba4856da16c7",
+                  "name": "Yes",
+                  "probability": "0.333",
+                  "payoff": [
+                    "0",
+                    0
+                  ],
+                  "childNode": {
+                    "id": "3214188f-b69c-e431-e533-f99ecaae7023",
+                    "childEdges": [
+                      {
+                        "id": "001bfb2d-071c-08b5-d0d2-6216c781ecfe",
+                        "name": "",
+                        "payoff": [
+                          "-2500000",
+                          0
+                        ],
+                        "childNode": {
+                          "id": "04f9aa4b-1bb7-9556-f037-6c6c8c71b4ee",
+                          "childEdges": [],
+                          "name": "",
+                          "code": "",
+                          "expressionScope": {},
+                          "folded": false,
+                          "location": {
+                            "x": 620,
+                            "y": 147.5
+                          },
+                          "type": "terminal"
+                        }
+                      }
+                    ],
+                    "name": "Active",
+                    "code": "",
+                    "expressionScope": {},
+                    "folded": false,
+                    "location": {
+                      "x": 470,
+                      "y": 147.5
+                    },
+                    "type": "decision"
+                  }
+                },
+                {
+                  "id": "fde5e946-fd92-ce9b-cf76-094a13f506d2",
+                  "name": "No",
+                  "probability": "#",
+                  "payoff": [
+                    "0",
+                    0
+                  ],
+                  "childNode": {
+                    "id": "56a943c2-6439-bd6e-a153-e881ccfdc055",
+                    "childEdges": [],
+                    "name": "",
+                    "code": "",
+                    "expressionScope": {},
+                    "folded": false,
+                    "location": {
+                      "x": 470,
+                      "y": 222.5
+                    },
+                    "type": "terminal"
+                  }
+                }
+              ],
+              "name": "Zod attack?",
+              "code": "",
+              "expressionScope": {},
+              "folded": false,
+              "location": {
+                "x": 320,
+                "y": 185
+              },
+              "type": "chance"
+            }
+          },
+          {
+            "id": "6c20c5d9-eaf4-830b-a730-b144118a7f04",
+            "name": "No",
+            "payoff": [
+              0,
+              0
+            ],
+            "childNode": {
+              "id": "797e29da-ecae-31e3-bc19-5f8efc2fffef",
+              "childEdges": [
+                {
+                  "id": "fd09b93e-5286-eaf7-bea5-284231be4b63",
+                  "name": "Yes",
+                  "probability": "0.3333",
+                  "payoff": [
+                    "-50000000",
+                    0
+                  ],
+                  "childNode": {
+                    "id": "69d7fc11-427d-d0bf-875e-59960fe9ebac",
+                    "childEdges": [],
+                    "name": "",
+                    "code": "",
+                    "expressionScope": {},
+                    "folded": false,
+                    "location": {
+                      "x": 470,
+                      "y": 312.5
+                    },
+                    "type": "terminal"
+                  }
+                },
+                {
+                  "id": "e4ffcf17-1117-0bce-7b37-7938c9c5fcf2",
+                  "name": "",
+                  "probability": "#",
+                  "payoff": [
+                    0,
+                    0
+                  ],
+                  "childNode": {
+                    "id": "9f2f0717-2a79-5f06-e3c3-9e07e0361ee2",
+                    "childEdges": [],
+                    "name": "",
+                    "code": "",
+                    "expressionScope": {},
+                    "folded": false,
+                    "location": {
+                      "x": 470,
+                      "y": 387.5
+                    },
+                    "type": "terminal"
+                  }
+                }
+              ],
+              "name": "Zod attack?",
+              "code": "",
+              "expressionScope": {},
+              "folded": false,
+              "location": {
+                "x": 320,
+                "y": 350
+              },
+              "type": "chance"
+            }
+          }
+        ],
+        "name": "Hire Superman?",
+        "code": "",
+        "expressionScope": {},
+        "folded": false,
+        "location": {
+          "x": 170,
+          "y": 267.5
+        },
+        "type": "decision"
+      }
+    }
+  ],
+  "name": "Joker Attack",
+  "type": "chance"
+}
