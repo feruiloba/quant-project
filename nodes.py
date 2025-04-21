@@ -9,6 +9,30 @@ class Node():
     def get_payoff(self):
         pass
 
+    def print_tree_json(self, level=0):
+        indent = "  " * level
+
+        node_json = vars(self).copy()
+
+        if hasattr(self, "edges"):
+            del node_json["edges"]
+            node_json["edges"] = []
+        else:
+            node_json["name"] = "Terminal"
+            # print(f"{indent}Node: {self.name}. Payoff {self.get_payoff()}")
+
+        if hasattr(self, 'edges'):
+            for edge in self.edges:
+                edge_json = vars(edge).copy()
+                if edge_json['result_node'] != None:
+                    del edge_json['result_node'] 
+                node_json["edges"].append(edge_json)
+                # print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {self.get_payoff()}")
+                if edge.result_node:
+                    edge.result_node.print_tree(level + 1)
+        
+        print(node_json)
+
     def print_tree(self, level=0):
         indent = "  " * level
         if (type(self) != TerminalNode):
@@ -111,5 +135,7 @@ if __name__ == "__main__":
     no_batman_joker_attack_no = ChanceEdge("No BM No Joker Attack", 0, 0.5)
     no_batman_joker_attack_node = ChanceNode("No BM. Joker Attack?", [no_batman_joker_attack_yes, no_batman_joker_attack_no])
     batman_hire_no.result_node = no_batman_joker_attack_node
+
+    no_batman_joker_attack_no.result_node = TerminalNode(id="9bd785f6-e6fc-af5c-3eb9-b79e0d029cd7", name="Terminal")
 
     print(zod_attack_node.get_payoff())
