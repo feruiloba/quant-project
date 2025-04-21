@@ -10,26 +10,33 @@ def create_decision_tree(file_name: str):
 
 def create_chance_edges(node_data):
     cumulative_probability = 0
+    sum_non_hashtag_probabilities = sum(eval(edge["probability"]) for edge in node_data["childEdges"] if edge["probability"] != "#")
     num_hashtags = len([edge for edge in node_data["childEdges"] if edge["probability"] == "#"])
+    hashtag_probability = (1 - sum_non_hashtag_probabilities) / num_hashtags
 
     edges = []
 
     for edge in node_data["childEdges"]:
-        cumulative_probability += float(edge["probability"]) if edge["probability"] != "#" else 0
-        edges.append(create_edge(edge, cumulative_probability, num_hashtags))
+        
+        edge_probability = edge["probability"]
+        
+        if edge_probability != "#":
+            cumulative_probability += eval(edge_probability)
+
+        edges.append(create_edge(edge, hashtag_probability))
 
     return edges
 
-def create_edge(edge_data, cumulative_probability: float = None, num_hashtags: int = 0):
+def create_edge(edge_data, hashtag_probability: float = None):
     edge_id = edge_data["id"]
     edge_name = edge_data["name"]
-    edge_payoff = float(edge_data["payoff"][0])
+    edge_payoff = eval(str(edge_data["payoff"][0]))
 
     # Determine edge type
     if edge_data.get("probability") is None:
         edge = DecisionEdge(edge_name, edge_payoff, edge_id)
     else:
-        edge_probability = float(edge_data["probability"]) if edge_data["probability"] != "#" else ((1 - cumulative_probability) / num_hashtags)
+        edge_probability = eval(edge_data["probability"]) if edge_data["probability"] != "#" else hashtag_probability
         edge = ChanceEdge(edge_name, edge_payoff, edge_probability, edge_id)
 
     if edge_data["childNode"] is not None:
@@ -56,4 +63,4 @@ def create_node(node_data):
 
 if __name__ == "__main__":
 
-    decision_tree = create_decision_tree("trees/decisiontree@2025.04.20_20.39.38.json")
+    decision_tree = create_decision_tree("trees/decisiontree@2025.04.18_23.23.07.json")
