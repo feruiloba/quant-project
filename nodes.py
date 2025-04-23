@@ -2,13 +2,13 @@ from abc import abstractmethod
 import uuid
 
 def get_lower_case_no_dash(text: str):
-    return text.lower().strip().replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
+    return text.lower().strip().replace(" ", "_").replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
 
 def get_var_name(text: str):
     guid = str(uuid.uuid4())[0:5]
     full_var_name = f"{text}_{guid}"
 
-    return full_var_name.lower().strip().replace(" ", "_").replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
+    return get_lower_case_no_dash(full_var_name)
 
 class Node():
     def __init__(self, name: str, id: str = None):
