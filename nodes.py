@@ -67,7 +67,7 @@ class Node():
         if hasattr(self, 'edges'):
             for edge in self.edges:
                 result_node_name = edge.result_node.name if edge.result_node and edge.result_node.name != '' else "Terminal"
-                print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {edge.get_payoff()}")
+                print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {edge.payoff}")
                 if edge.result_node:
                     edge.result_node.print_tree(level + 1)
 
