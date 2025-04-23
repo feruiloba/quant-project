@@ -5,8 +5,7 @@ def create_decision_tree(file_name: str):
     # Parsing the JSON structure
     with open(file_name) as f:
         decision_tree_data = json.load(f)
-        main_node = create_node(decision_tree_data)
-        main_node.print_tree()
+        return create_node(decision_tree_data)
 
 def create_chance_edges(node_data):
     cumulative_probability = 0
@@ -17,9 +16,9 @@ def create_chance_edges(node_data):
     edges = []
 
     for edge in node_data["childEdges"]:
-        
+
         edge_probability = edge["probability"]
-        
+
         if edge_probability != "#":
             cumulative_probability += eval(edge_probability)
 
@@ -64,3 +63,4 @@ def create_node(node_data):
 if __name__ == "__main__":
 
     decision_tree = create_decision_tree("trees/decisiontree@2025.04.18_23.23.07.json")
+    decision_tree.print_tree_vars()

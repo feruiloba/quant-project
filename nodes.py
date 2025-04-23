@@ -1,4 +1,14 @@
 from abc import abstractmethod
+import uuid
+
+def get_lower_case_no_dash(text: str):
+    return text.lower().strip().replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
+
+def get_var_name(text: str):
+    guid = str(uuid.uuid4())[0:5]
+    full_var_name = f"{text}_{guid}"
+
+    return full_var_name.lower().strip().replace(" ", "_").replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
 
 class Node():
     def __init__(self, name: str, id: str = None):
@@ -9,29 +19,45 @@ class Node():
     def get_payoff(self):
         pass
 
-    def print_tree_json(self, level=0):
-        indent = "  " * level
+    def get_var_name(self):
+        return get_var_name(self.name)
 
-        node_json = vars(self).copy()
+    def print_tree_vars(self, level=0, result_nodes: list[str] = []):
 
+        if self.id == None:
+            self.id = self.get_var_name()
+
+        edge_vars = []
         if hasattr(self, "edges"):
-            del node_json["edges"]
-            node_json["edges"] = []
-        else:
-            node_json["name"] = "Terminal"
-            # print(f"{indent}Node: {self.name}. Payoff {self.get_payoff()}")
-
-        if hasattr(self, 'edges'):
             for edge in self.edges:
-                edge_json = vars(edge).copy()
-                if edge_json['result_node'] != None:
-                    del edge_json['result_node'] 
-                node_json["edges"].append(edge_json)
-                # print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {self.get_payoff()}")
+
+                if edge.id is None:
+                    edge.id = edge.get_var_name()
+
+                edge_var_name = f"edge_{edge.get_var_name()}"
+                edge_vars.append(edge_var_name)
+
+                if type(edge) is DecisionEdge:
+                    print(f"{edge_var_name} = DecisionEdge(name='{edge.get_var_name()}', payoff={edge.payoff}, id='{edge.id}')")
+                elif type(edge) is ChanceEdge:
+                    print(f"{edge_var_name} = ChanceEdge(name='{edge.get_var_name()}', payoff={edge.payoff}, probability={edge.probability}, id='{edge.id}')")
+
                 if edge.result_node:
-                    edge.result_node.print_tree(level + 1)
-        
-        print(node_json)
+                    if edge.result_node.id is None:
+                        edge.result_node.id = edge.result_node.get_var_name()
+                    result_nodes.append(f"{edge_var_name}.result_node = node_{get_lower_case_no_dash(edge.result_node.id)}")
+                    edge.result_node.print_tree_vars(level + 1, result_nodes)
+
+        edge_names = ", ".join(edge_vars)
+        if type(self) is ChanceNode:
+            print(f"node_{get_lower_case_no_dash(self.id)} = ChanceNode(name='{self.get_var_name()}', id='{self.id}', edges=[{edge_names}])")
+        elif type(self) is DecisionNode:
+            print(f"node_{get_lower_case_no_dash(self.id)} = DecisionNode(name='{self.get_var_name()}', id='{self.id}', edges=[{edge_names}])")
+        elif type(self) is TerminalNode:
+            print(f"node_{get_lower_case_no_dash(self.id)} = TerminalNode(name='{self.get_var_name()}', id='{self.id}')")
+
+        if level == 0:
+            print("\n".join(result_nodes))
 
     def print_tree(self, level=0):
         indent = "  " * level
@@ -41,7 +67,7 @@ class Node():
         if hasattr(self, 'edges'):
             for edge in self.edges:
                 result_node_name = edge.result_node.name if edge.result_node and edge.result_node.name != '' else "Terminal"
-                print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {self.get_payoff()}")
+                print(f"{indent}  Edge: {edge.name} -> {result_node_name}. Payoff: {edge.get_payoff()}")
                 if edge.result_node:
                     edge.result_node.print_tree(level + 1)
 
@@ -57,6 +83,9 @@ class Edge():
             return self.payoff
 
         return self.payoff + self.result_node.get_payoff()
+
+    def get_var_name(self):
+        return get_var_name(self.name)
 
 class DecisionEdge(Edge):
     def __init__(self, name: str, payoff: float, id: str = None):
