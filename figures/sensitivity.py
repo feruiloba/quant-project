@@ -1,9 +1,9 @@
 import copy
-from city import City
-from strategy import Strategy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from strategy import Strategy
+from strategies.city import City
 
 class Sensitivity():
     def __init__(self, strategy: Strategy, properties: list[str], property_names: list[str]):

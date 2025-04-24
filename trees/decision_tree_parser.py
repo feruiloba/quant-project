@@ -1,5 +1,5 @@
 import json
-from nodes import TerminalNode, DecisionNode, ChanceNode, DecisionEdge, ChanceEdge
+from trees.nodes import TerminalNode, DecisionNode, ChanceNode, DecisionEdge, ChanceEdge
 
 def create_decision_tree(file_name: str):
     # Parsing the JSON structure

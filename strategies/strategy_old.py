@@ -1,15 +1,15 @@
 
-from city import City
-from nodes import ChanceEdge, ChanceNode, DecisionEdge, DecisionNode, TerminalNode
+from strategies.city import City
+from trees.nodes import ChanceEdge, ChanceNode, DecisionEdge, DecisionNode, TerminalNode
+from strategy import Strategy
 
-class Strategy():
+class StrategyOld(Strategy):
 
     def __init__(
         self,
         city: City):
-
-        # Initializing attributes
-        self.city = city
+        super().__init__(city=city)
+        
 
     def build_tree(self):
         edge__1791c = DecisionEdge(name='_a212b', payoff=-1814964, id='1f278e39-f63b-fa40-e9be-b36063a80f78')
@@ -219,10 +219,10 @@ if __name__ == "__main__":
         discount_rate=0.07,
         num_years=10,
         num_sysadmins=10,
-        prob_leak= 0.44, # with expert 4 - 0.5166666666666667,
-        prob_key= 0.916, # with expert 4 - 0.7966666666666666,
+        prob_leak=0.5166666666666667,
+        prob_key= 0.7966666666666666,
         prob_attack=0.03833333333333333,
-        prob_backup = 0.32,# with expert 4 0.2683333333333333,
+        prob_backup = 0.2683333333333333,
         prob_bs=0,
         cost_ransom_payment=-164243000,
         inhouse_cost=0,
@@ -239,9 +239,8 @@ if __name__ == "__main__":
         cost_ransom_key=0,
         cost_ransom_no_key=-66045000)
 
-    strategy = Strategy(city)
+    strategy = StrategyOld(city)
     tree = strategy.build_tree()
     tree.print_tree()
-    # print(tree.get_payoff())
 
 
