@@ -93,18 +93,21 @@ class City:
         return expected_value_from_cdf(values, probabilities)
 
     @staticmethod
-    def calculate_prob_key(self):
-        probabilities = [0.95, 0.90, 0.85, 0.20, 0.98, 0.90]
+    def calculate_prob_key():
+        probabilities = [0.95, 0.90, 0.85, 0.98, 0.90]
+        # probabilities = [0.95, 0.90, 0.85, 0.20, 0.98, 0.90]
         return np.average(probabilities)
 
     @staticmethod
-    def calculate_prob_successful_backup(self):
-        probabilities = [0.4, 0.4, 0.3, 0.01, 0.2, 0.3 ]
+    def calculate_prob_successful_backup():
+        probabilities = [0.4, 0.4, 0.3, 0.2, 0.3 ]
+        # probabilities = [0.4, 0.4, 0.3, 0.01, 0.2, 0.3 ]
         return np.average(probabilities)
 
     @staticmethod
-    def calculate_prob_leak(self):
-        probabilities = [0.5, 0.5, 0.3, 0.9, 0.5, 0.4]
+    def calculate_prob_leak():
+        probabilities = [0.5, 0.5, 0.3, 0.5, 0.4]
+        # probabilities = [0.5, 0.5, 0.3, 0.9, 0.5, 0.4]
         return np.average(probabilities)
 
     @staticmethod
@@ -128,3 +131,36 @@ class City:
     @staticmethod
     def calculate_backups_cost(self):
         return npf.npv(self.discount_rate, np.full(self.num_years, self.backups_cost))
+
+if __name__ == "__main__":
+    city = City(
+        name="Springfield",
+        num_employees=1280,
+        num_citizens=500000,
+        budget=10000000,
+        discount_rate=0.07,
+        num_years=10,
+        num_sysadmins=10,
+        prob_leak=0.5166666666666667,
+        prob_key=0.7966666666666666,
+        prob_attack=0.03833333333333333,
+        prob_backup=0.2683333333333333,
+        prob_bs=0,
+        cost_ransom_payment=-164243000,
+        inhouse_cost=0,
+        it_services_cost=-600000,
+        insurance_cost=0,
+        backups_cost=0,
+        no_backups_cost=0,
+        cost_downtime=0,
+        cost_downtime_bs=0,
+        cost_leak_key=-319168,
+        cost_leak_no_key=-3691680,
+        cost_data_loss_recovery=0,
+        cost_data_loss_no_recovery=0,
+        cost_ransom_key=0,
+        cost_ransom_no_key=-66045000)
+
+    print(city.calculate_prob_key())
+    print(city.calculate_prob_leak())
+    print(city.calculate_prob_successful_backup())
