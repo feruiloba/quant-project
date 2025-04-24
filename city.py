@@ -31,7 +31,8 @@ class City:
             cost_ransom_payment: float,
             cost_downtime: float,
             cost_downtime_bs: float,
-            cost_leak: float,
+            cost_leak_key: float,
+            cost_leak_no_key: float,
             cost_data_loss_recovery: float,
             cost_data_loss_no_recovery: float,
             cost_ransom_key: float,
@@ -60,7 +61,8 @@ class City:
         # costs
         self.cost_downtime = cost_downtime
         self.cost_downtime_bs = cost_downtime_bs
-        self.cost_leak = cost_leak
+        self.cost_leak_key = cost_leak_key
+        self.cost_leak_no_key = cost_leak_no_key
         self.cost_data_loss_recovery = cost_data_loss_recovery
         self.cost_data_loss_no_recovery = cost_data_loss_no_recovery
         self.cost_ransom_key = cost_ransom_key

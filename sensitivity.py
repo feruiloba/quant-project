@@ -3,7 +3,7 @@ from city import City
 from strategy import Strategy
 import matplotlib.pyplot as plt
 import numpy as np
-
+import pandas as pd
 
 class Sensitivity():
     def __init__(self, strategy: Strategy, properties: list[str], property_names: list[str]):
@@ -42,57 +42,71 @@ class Sensitivity():
         plt.xlabel('Change (%)')
         plt.ylabel('Cost')
         plt.title('Sensitivity Analysis')
-        plt.legend(self.property_names)
+        # plt.legend(self.property_names)
         plt.grid(True)
         plt.tight_layout()
         plt.show()
 
-    def tornado_chart(self):
-        num_properties = len(self.properties)
-
-        base_value = getattr(self.strategy.city, property)
-        variations = self.get_variations_array(base_value, percentages)
-        strategies = self.get_strategies_array(variations, property)
-        costs = [min(strategy.build_tree().get_payoff(), 0)
-                 for strategy in strategies]
-
-        fig, (ax_left, ax_right) = plt.subplots(ncols=num_properties)
-
-        negative_percentages = percentages = [i * 0.1 for i in range(-10, 0)]
-        positive_percentages = percentages = [i * 0.1 for i in range(0, 10)]
-        for property in self.properties:
-
-            base_value = getattr(self.strategy.city, property)
-            x_values_left = self.get_variations_array(
-                base_value, negative_percentages)
-            strategies_left = self.get_strategies_array(
-                x_values_left, property)
-            y_values_left = [strategy.build_tree().get_payoff()
-                             for strategy in strategies_left]
-
-            x_values_right = self.get_variations_array(
-                base_value, positive_percentages)
-            strategies_right = self.get_strategies_array(
-                x_values_right, property)
-            y_values_right = [strategy.build_tree().get_payoff()
-                              for strategy in strategies_right]
-
-            ax_left.barh(x_values_left, y_values_left,
-                         align="center", facecolor="cornflowerblue")
-
-            ax_left.set_yticks(x_values_left)
-
-            ax_left.set_xlabel("Change (%)")
-
-            ax_left.invert_xaxis()
-
-            ax_right.barh(x_values_right, y_values_right,
-                          align="center", facecolor="lemonchiffon")
-
-            ax_right.set_yticks(x_values_right)
+    @staticmethod
+    def plot_stacked_bar_chart():
+        # create data
+        df = pd.DataFrame(
+            data=[
+                ['A', 10, 20, 10, 26],
+                ['B', 20, 25, 15, 21],
+                ['C', 12, 15, 19, 6],
+                ['D', 10, 18, 11, 19]],
+            columns=['Team', 'Round 1', 'Round 2', 'Round 3', 'Round 4'])
+        df.plot(
+            x='Team',
+            kind='barh',
+            stacked=True,
+            title='Stacked Bar Graph by dataframe')
 
         plt.show()
 
+    @staticmethod
+    def plot_bar_chart():
+        # Sample data
+        df = pd.DataFrame(
+            data=[
+                ['Expert 1', 10, 20, 10],
+                ['Expert 2', 20, 25, 15],
+                ['Expert 3', 12, 15, 19],
+                ['Expert 4', 10, 18, 11]],
+            columns=['Team', 'Cost of Leak with Data Loss', 'Cost of Ransomware Payment', 'Cost of Leak without Data Loss'])
+
+        # Create the bar chart
+        df.plot(x='Team', kind='barh', figsize=(10, 6))
+
+        # Add title and labels
+        plt.title('Bar Chart Example')
+        plt.xlabel('Teams')
+        plt.ylabel('Scores')
+
+        # Show the plot
+        plt.tight_layout()
+        plt.show()
+
+    @staticmethod
+    def plot_box_plot():
+        # Sample data
+        df = pd.DataFrame(
+            data=[
+                np.random.normal(loc=0, scale=1, size=10),
+                np.random.normal(loc=0, scale=1, size=10),
+                np.random.normal(loc=0, scale=1, size=10),
+                np.random.normal(loc=0, scale=1, size=10)])
+
+        # Create the box plot
+        df.plot(kind='box')
+
+        # Add title and labels
+        plt.title('Box Plot Example')
+        plt.ylabel('Values')
+
+        # Show the plot
+        plt.show()
 
 if __name__ == "__main__":
     city = City(
@@ -103,10 +117,10 @@ if __name__ == "__main__":
         discount_rate=0.07,
         num_years=10,
         num_sysadmins=10,
-        prob_leak=0.5166666666666667,
-        prob_key=0.7966666666666666,
+        prob_leak= 0.44, #with expert 4 - 0.5166666666666667,
+        prob_key= 0.916, # with expert 4 - 0.7966666666666666,
         prob_attack=0.03833333333333333,
-        prob_backup=0.2683333333333333,
+        prob_backup = 0.32,# with expert 4 0.2683333333333333,
         prob_bs=0,
         cost_ransom_payment=-164243000,
         inhouse_cost=0,
@@ -116,7 +130,8 @@ if __name__ == "__main__":
         no_backups_cost=0,
         cost_downtime=0,
         cost_downtime_bs=0,
-        cost_leak=-319168,
+        cost_leak_key=-319168,
+        cost_leak_no_key=-3691680,
         cost_data_loss_recovery=0,
         cost_data_loss_no_recovery=0,
         cost_ransom_key=0,
@@ -124,7 +139,8 @@ if __name__ == "__main__":
 
     strategy = Strategy(city=city)
 
-    sensitivity = Sensitivity(strategy=strategy,
+    sensitivity = Sensitivity(
+        strategy=strategy,
         properties=[
             "prob_attack",
             "prob_leak",
@@ -132,7 +148,7 @@ if __name__ == "__main__":
             "prob_backup",
             "cost_ransom_payment",
             "it_services_cost",
-            "cost_leak",
+            "cost_leak_key",
             "cost_ransom_no_key"
         ],
         property_names=[
@@ -148,4 +164,4 @@ if __name__ == "__main__":
 
     sensitivity.plot_sensitivities()
 
-    # sensitivity.tornado_chart()
+    # sensitivity.plot_bar_chart()

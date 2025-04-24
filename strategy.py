@@ -41,17 +41,17 @@ class Strategy():
         node_key_f52ff = ChanceNode(name='key_9dc90', id='key_f52ff', edges=[edge_obtain_key_f3952, edge_no_key_ce4ee])
         edge_paid_b5f8b.result_node = node_key_f52ff
 
-        edge_leak_e63d5 = ChanceEdge(name='leak_12263', payoff=self.city.cost_leak, probability=self.city.prob_leak, id='leak_b0be3')
+        edge_leak_e63d5 = ChanceEdge(name='leak_12263', payoff=self.city.cost_leak_key, probability=self.city.prob_leak, id='leak_b0be3')
         edge_no_leak_f6dee = ChanceEdge(name='no_leak_edd6a', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_eac2c')
         node_data_leak_a9deb = ChanceNode(name='data_leak_19c3e', id='data_leak_a9deb', edges=[edge_leak_e63d5, edge_no_leak_f6dee])
         edge_obtain_key_f3952.result_node = node_data_leak_a9deb
 
-        edge_leak_8093b = ChanceEdge(name='leak_56533', payoff=-3691680, probability=self.city.prob_leak, id='leak_e93e4')
+        edge_leak_8093b = ChanceEdge(name='leak_56533', payoff=self.city.cost_leak_no_key, probability=self.city.prob_leak, id='leak_e93e4')
         edge_no_leak_eb3c9 = ChanceEdge(name='no_leak_14286', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_d54f9')
         node_data_leak_54d26 = ChanceNode(name='data_leak_95cbb', id='data_leak_54d26', edges=[edge_leak_8093b, edge_no_leak_eb3c9])
         edge_no_key_ce4ee.result_node = node_data_leak_54d26
 
-        edge_leak_034c7 = ChanceEdge(name='leak_dbece', payoff=self.city.cost_leak, probability=self.city.prob_leak, id='leak_44936')
+        edge_leak_034c7 = ChanceEdge(name='leak_dbece', payoff=self.city.cost_leak_key, probability=self.city.prob_leak, id='leak_44936')
         edge_no_leak_80643 = ChanceEdge(name='no_leak_6ad7d', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_57b82')
         node_data_leak_6540e = ChanceNode(name='data_leak_0e902', id='data_leak_6540e', edges=[edge_leak_034c7, edge_no_leak_80643])
         edge_dont_pay_45eb9.result_node = node_data_leak_6540e
@@ -80,22 +80,22 @@ class Strategy():
         node_key_2ff5c = ChanceNode(name='key_76c34', id='key_2ff5c', edges=[edge_obtain_key_504ce, edge_no_key_2645a])
         edge_paid_a3557.result_node = node_key_2ff5c
 
-        edge_leak_268dc = ChanceEdge(name='leak_cb935', payoff=self.city.cost_leak, probability=self.city.prob_leak, id='leak_6f71b')
+        edge_leak_268dc = ChanceEdge(name='leak_cb935', payoff=self.city.cost_leak_key, probability=self.city.prob_leak, id='leak_6f71b')
         edge_no_leak_b6d92 = ChanceEdge(name='no_leak_e0502', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_442cd')
         node_data_leak_a28d0 = ChanceNode(name='data_leak_7da4c', id='data_leak_a28d0', edges=[edge_leak_268dc, edge_no_leak_b6d92])
         edge_obtain_key_504ce.result_node = node_data_leak_a28d0
 
-        edge_leak_b1a2d = ChanceEdge(name='leak_3c622', payoff=-3691680, probability=self.city.prob_leak, id='leak_8bd13')
+        edge_leak_b1a2d = ChanceEdge(name='leak_3c622', payoff=self.city.cost_leak_no_key, probability=self.city.prob_leak, id='leak_8bd13')
         edge_no_leak_02f15 = ChanceEdge(name='no_leak_d348f', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_859cf')
         node_data_leak_4826a = ChanceNode(name='data_leak_aad06', id='data_leak_4826a', edges=[edge_leak_b1a2d, edge_no_leak_02f15])
         edge_no_key_2645a.result_node = node_data_leak_4826a
 
-        edge_leak_a304e = ChanceEdge(name='leak_5fac7', payoff=-3691680, probability=self.city.prob_leak, id='leak_5ab72')
+        edge_leak_a304e = ChanceEdge(name='leak_5fac7', payoff=self.city.cost_leak_no_key, probability=self.city.prob_leak, id='leak_5ab72')
         edge_no_leak_a0709 = ChanceEdge(name='no_leak_636cb', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_caee7')
         node_data_leak_32b9a = ChanceNode(name='data_leak_e870f', id='data_leak_32b9a', edges=[edge_leak_a304e, edge_no_leak_a0709])
         edge_dont_pay_e64ce.result_node = node_data_leak_32b9a
 
-        edge_leak_ef2a0 = ChanceEdge(name='leak_10e9f', payoff=self.city.cost_leak, probability=self.city.prob_leak, id='leak_d39b4')
+        edge_leak_ef2a0 = ChanceEdge(name='leak_10e9f', payoff=self.city.cost_leak_key, probability=self.city.prob_leak, id='leak_d39b4')
         edge_no_leak_b65e9 = ChanceEdge(name='no_leak_1a35c', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_aa4ae')
         node_data_leak_aa929 = ChanceNode(name='data_leak_da17e', id='data_leak_aa929', edges=[edge_leak_ef2a0, edge_no_leak_b65e9])
         edge__65f92.result_node = node_data_leak_aa929
@@ -104,7 +104,7 @@ class Strategy():
         node_external_it_securityinsurance_included_5dac9 = DecisionNode(name='external_it_securityinsurance_included_5dac9', id='d45d94b0-302e-442d-5069-267cc52167ee', edges=[edge__5e316])
         edge__66199.result_node = node_external_it_securityinsurance_included_5dac9
 
-        edge_leak_ea176 = ChanceEdge(name='leak_aaa6f', payoff=self.city.cost_leak, probability=0.1, id='leak_a06ad')
+        edge_leak_ea176 = ChanceEdge(name='leak_aaa6f', payoff=self.city.cost_leak_key, probability=0.1, id='leak_a06ad')
         edge_no_leak_ea79b = ChanceEdge(name='no_leak_7fa81', payoff=0, probability=0.9, id='no_leak_4bb13')
         node_data_leak_4ca7a = ChanceNode(name='data_leak_27a01', id='data_leak_4ca7a', edges=[edge_leak_ea176, edge_no_leak_ea79b])
         edge__5e316.result_node = node_data_leak_4ca7a
@@ -128,12 +128,12 @@ class Strategy():
         edge_paid_62c2e.result_node = node_key_31dd6
 
         edge_no_leak_20eae = ChanceEdge(name='no_leak_359e1', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_14d58')
-        edge_leak_deb5b = ChanceEdge(name='leak_07f43', payoff=self.city.cost_leak, probability=self.city.prob_leak, id='leak_b8ec1')
+        edge_leak_deb5b = ChanceEdge(name='leak_07f43', payoff=self.city.cost_leak_key, probability=self.city.prob_leak, id='leak_b8ec1')
         node_data_leak_c732a = ChanceNode(name='data_leak_cc9b9', id='data_leak_c732a', edges=[edge_leak_deb5b, edge_no_leak_20eae])
         edge_obtain_key_1c39e.result_node = node_data_leak_c732a
 
         edge_no_leak_77cb7 = ChanceEdge(name='no_leak_164ab', payoff=0, probability=(1-self.city.prob_leak), id='no_leak_c26b7')
-        edge_leak_62a58 = ChanceEdge(name='leak_be68e', payoff=-3691680, probability=self.city.prob_leak, id='leak_0d3f3')
+        edge_leak_62a58 = ChanceEdge(name='leak_be68e', payoff=self.city.cost_leak_no_key, probability=self.city.prob_leak, id='leak_0d3f3')
         node_data_leak_4739b = ChanceNode(name='data_leak_7757c', id='data_leak_4739b', edges=[edge_leak_62a58, edge_no_leak_77cb7])
         edge_no_key_70ebb.result_node = node_data_leak_4739b
 
