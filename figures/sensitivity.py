@@ -1,9 +1,13 @@
+import sys
+
+from matplotlib import ticker
+sys.path.insert(0, '../strategies')
+
 import copy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from strategy import Strategy
-from strategies.city import City
+from strategy import Strategy, City
 
 class Sensitivity():
     def __init__(self, strategy: Strategy, properties: list[str], property_names: list[str]):
@@ -70,19 +74,21 @@ class Sensitivity():
         # Sample data
         df = pd.DataFrame(
             data=[
-                ['Expert 1', 10, 20, 10],
-                ['Expert 2', 20, 25, 15],
-                ['Expert 3', 12, 15, 19],
-                ['Expert 4', 10, 18, 11]],
-            columns=['Team', 'Cost of Leak with Data Loss', 'Cost of Ransomware Payment', 'Cost of Leak without Data Loss'])
+                ['Expert 1', 1668750],
+                ['Expert 2', 5419200],
+                ['Expert 3', 8059200],
+                ['Expert 5', 15750000],
+                ['Expert 6', 2340750]],
+                columns=["Expert", "Cost"])
 
         # Create the bar chart
-        df.plot(x='Team', kind='barh', figsize=(10, 6))
-
+        df.plot(x='Expert', kind='barh', figsize=(10, 6))
+        
         # Add title and labels
-        plt.title('Bar Chart Example')
-        plt.xlabel('Teams')
-        plt.ylabel('Scores')
+        plt.title('Cost per attack')
+        plt.xlabel('Cost')
+        plt.ylabel('Experts')
+        plt.ticklabel_format(style='plain', axis='x')
 
         # Show the plot
         plt.tight_layout()
@@ -162,6 +168,6 @@ if __name__ == "__main__":
             "No key provided cost"
     ])
 
-    sensitivity.plot_sensitivities()
+    # sensitivity.plot_sensitivities()
 
-    # sensitivity.plot_bar_chart()
+    sensitivity.plot_bar_chart()

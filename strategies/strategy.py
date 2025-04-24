@@ -1,7 +1,9 @@
+import sys
+sys.path.insert(0, '../trees')
 
 from abc import abstractmethod
-from strategies.city import City
-from trees.nodes import ChanceEdge, ChanceNode, DecisionEdge, DecisionNode, Node, TerminalNode
+from city import City
+from nodes import Node
 
 class Strategy():
 
