@@ -83,7 +83,7 @@ class Sensitivity():
 
         # Create the bar chart
         df.plot(x='Expert', kind='barh', figsize=(10, 6))
-        
+
         # Add title and labels
         plt.title('Cost per attack')
         plt.xlabel('Cost')
@@ -113,6 +113,102 @@ class Sensitivity():
 
         # Show the plot
         plt.show()
+
+    @staticmethod
+    def bar_chart_with_bounds():
+
+        # 1. Data
+        categories = [
+            "Solar PV—Rooftop Residential",
+            "Solar PV—Community & C&I",
+            "Solar PV—Utility",
+            "Solar PV + Storage—Utility",
+            "Geothermal",
+            "Wind—Onshore",
+            "Wind + Storage—Onshore",
+            "Wind—Offshore",
+            # separator here
+            "Gas Peaking",
+            "U.S. Nuclear",
+            "Coal",
+            "Gas Combined Cycle"
+        ]
+
+        # (min, max) for each
+        intervals = [
+            (122, 284),
+            (54, 191),
+            (29,  92),
+            (60, 210),
+            (64, 106),
+            (27,  73),
+            (45, 133),
+            (74, 139),
+            (110,228),
+            (142,222),
+            (69, 168),
+            (45, 108),
+        ]
+
+        # diamond markers for point estimates (x, idx, color)
+        markers = [
+            (85,  8, "orange"),   # Gas Peaking
+            (32,  9, "orange"),   # U.S. Nuclear
+            (71, 10, "orange"),   # Coal
+            (30, 11, "orange"),   # Gas CC
+            (150,11,"green"),     # Gas CC green diamond
+            (190, 9, "red"),      # Nuclear red diamond
+        ]
+
+        # indices of the bars that should be dashed‐outline (e.g. Geothermal, Coal, Nuclear)
+        dashed_idx = [4, 9, 10]
+
+        # 2. Plot
+        fig, ax = plt.subplots(figsize=(8, 6))
+        y = list(range(len(categories)))
+
+        # a) solid bars
+        for i, (mn, mx) in enumerate(intervals):
+            width = mx - mn
+            if i in dashed_idx:
+                # dashed outline
+                ax.barh(i, width, left=mn,
+                        facecolor="none",
+                        edgecolor="gray",
+                        linestyle="--",
+                        height=0.8)
+            else:
+                ax.barh(i, width, left=mn,
+                        color="navy",
+                        height=0.8)
+
+        # b) diamond markers
+        for x, idx, color in markers:
+            ax.scatter(x, idx,
+                    marker="D",
+                    s=80,
+                    color=color,
+                    edgecolor="black",
+                    zorder=5)
+
+        # c) separator
+        sep = 8.5  # between the 8th and 9th item
+        ax.axhline(sep, color="black", linewidth=1)
+
+        # d) annotations
+        for i, (mn, mx) in enumerate(intervals):
+            ax.text(mn-2, i, f"${mn}", va="center", ha="right", color="white" if i not in dashed_idx else "gray")
+            ax.text(mx+2, i, f"${mx}", va="center", ha="left")
+
+        # 3. Styling
+        ax.set_yticks(y)
+        ax.set_yticklabels(categories)
+        ax.invert_yaxis()           # so the first item is at the top
+        ax.set_xlim(0, 300)
+        ax.set_xlabel("Levelized Cost ($/MWh)")
+        plt.tight_layout()
+        plt.show()
+
 
 if __name__ == "__main__":
     city = City(
@@ -170,4 +266,6 @@ if __name__ == "__main__":
 
     # sensitivity.plot_sensitivities()
 
-    sensitivity.plot_bar_chart()
+    # sensitivity.plot_bar_chart()
+
+    sensitivity.bar_chart_with_bounds()
