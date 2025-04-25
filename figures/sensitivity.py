@@ -1,16 +1,18 @@
-import sys
 
 from matplotlib import ticker
-sys.path.insert(0, '../strategies')
 
 import copy
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import sys
+
+sys.path.insert(0, '/home/feruiloba/quant-project/strategies')
 from strategy import Strategy, City
+from strategy_new import StrategyNew
 
 class Sensitivity():
-    def __init__(self, strategy: Strategy, properties: list[str], property_names: list[str]):
+    def __init__(self, strategy: StrategyNew, properties: list[str], property_names: list[str]):
         self.strategy = strategy
         self.properties = properties
         self.property_names = property_names
@@ -46,7 +48,7 @@ class Sensitivity():
         plt.xlabel('Change (%)')
         plt.ylabel('Cost')
         plt.title('Sensitivity Analysis')
-        # plt.legend(self.property_names)
+        plt.legend(self.property_names)
         plt.grid(True)
         plt.tight_layout()
         plt.show()
@@ -85,7 +87,7 @@ class Sensitivity():
         df.plot(x='Expert', kind='barh', figsize=(10, 6))
 
         # Add title and labels
-        plt.title('Cost per attack')
+        plt.title('Yearly cost of ransomware attacks')
         plt.xlabel('Cost')
         plt.ylabel('Experts')
         plt.ticklabel_format(style='plain', axis='x')
@@ -118,53 +120,30 @@ class Sensitivity():
     def bar_chart_with_bounds():
 
         # 1. Data
-        categories = [
-            "Solar PV—Rooftop Residential",
-            "Solar PV—Community & C&I",
-            "Solar PV—Utility",
-            "Solar PV + Storage—Utility",
-            "Geothermal",
-            "Wind—Onshore",
-            "Wind + Storage—Onshore",
-            "Wind—Offshore",
-            # separator here
-            "Gas Peaking",
-            "U.S. Nuclear",
-            "Coal",
-            "Gas Combined Cycle"
-        ]
+        categories = ['Expert 1', 'Expert 2', 'Expert 3', 'Expert 5', 'Expert 6', 'Mean']
 
         # (min, max) for each
         intervals = [
-            (122, 284),
-            (54, 191),
-            (29,  92),
-            (60, 210),
-            (64, 106),
-            (27,  73),
-            (45, 133),
-            (74, 139),
-            (110,228),
-            (142,222),
-            (69, 168),
-            (45, 108),
+            (1.223, 1.669),
+            (5.419, 5.419),
+            (2.819, 8.059),
+            (13.350, 15.75),
+            (2.341, 2.341),
+            (1.223, 15.75)
         ]
 
         # diamond markers for point estimates (x, idx, color)
         markers = [
-            (85,  8, "orange"),   # Gas Peaking
-            (32,  9, "orange"),   # U.S. Nuclear
-            (71, 10, "orange"),   # Coal
-            (30, 11, "orange"),   # Gas CC
-            (150,11,"green"),     # Gas CC green diamond
-            (190, 9, "red"),      # Nuclear red diamond
+            (5.419,  1, "orange"),
+            (2.341,  4, "orange"),
+            (8.4865, 5, "blue")
         ]
 
         # indices of the bars that should be dashed‐outline (e.g. Geothermal, Coal, Nuclear)
-        dashed_idx = [4, 9, 10]
+        dashed_idx = [5]
 
         # 2. Plot
-        fig, ax = plt.subplots(figsize=(8, 6))
+        fig, ax = plt.subplots(figsize=(10, 6))
         y = list(range(len(categories)))
 
         # a) solid bars
@@ -192,20 +171,23 @@ class Sensitivity():
                     zorder=5)
 
         # c) separator
-        sep = 8.5  # between the 8th and 9th item
+        sep = 4.5  # between the 4th and 5th item
         ax.axhline(sep, color="black", linewidth=1)
 
         # d) annotations
         for i, (mn, mx) in enumerate(intervals):
-            ax.text(mn-2, i, f"${mn}", va="center", ha="right", color="white" if i not in dashed_idx else "gray")
-            ax.text(mx+2, i, f"${mx}", va="center", ha="left")
+            ax.text(mn-0.3, i, f"${mn}", va="center", ha="right") # color="white" if i not in dashed_idx else "gray"
+            if i in dashed_idx or i not in [t[1] for t in markers]:
+                ax.text(mx+0.3, i, f"${mx}", va="center", ha="left")
 
         # 3. Styling
         ax.set_yticks(y)
         ax.set_yticklabels(categories)
         ax.invert_yaxis()           # so the first item is at the top
-        ax.set_xlim(0, 300)
-        ax.set_xlabel("Levelized Cost ($/MWh)")
+        ax.set_xlim(-1, 18)
+        ax.set_xlabel("Total yearly cost (millions)")
+        plt.title("Distribution of total costs by expert")
+        plt.ticklabel_format(style='plain', axis='x')
         plt.tight_layout()
         plt.show()
 
@@ -219,10 +201,10 @@ if __name__ == "__main__":
         discount_rate=0.07,
         num_years=10,
         num_sysadmins=10,
-        prob_leak= 0.44, #with expert 4 - 0.5166666666666667,
-        prob_key= 0.916, # with expert 4 - 0.7966666666666666,
+        prob_leak=0.44, # without expert 4
+        prob_key=0.916, # without expert 4
         prob_attack=0.03833333333333333,
-        prob_backup = 0.32,# with expert 4 0.2683333333333333,
+        prob_backup = 0.32,# without expert 4
         prob_bs=0,
         cost_ransom_payment=-164243000,
         inhouse_cost=0,
@@ -233,39 +215,39 @@ if __name__ == "__main__":
         cost_downtime=0,
         cost_downtime_bs=0,
         cost_leak_key=-319168,
-        cost_leak_no_key=-3691680,
+        cost_leak_no_key=-136592160,
         cost_data_loss_recovery=0,
         cost_data_loss_no_recovery=0,
         cost_ransom_key=0,
         cost_ransom_no_key=-66045000)
 
-    strategy = Strategy(city=city)
+    strategy = StrategyNew(city=city)
 
     sensitivity = Sensitivity(
         strategy=strategy,
         properties=[
             "prob_attack",
-            "prob_leak",
-            "prob_key",
-            "prob_backup",
-            "cost_ransom_payment",
+            # "prob_leak",
+            # "prob_key",
+            # "prob_backup",
+            # "cost_ransom_payment",
             "it_services_cost",
             "cost_leak_key",
-            "cost_ransom_no_key"
+            # "cost_ransom_no_key"
         ],
         property_names=[
             "Probability of attack",
-            "Probability of leak",
-            "Probability of key",
-            "Probability of backup",
-            "Ransom payment cost",
+            # "Probability of leak",
+            # "Probability of key",
+            # "Probability of backup",
+            # "Ransom payment cost",
             "IT services cost",
             "Leak cost",
-            "No key provided cost"
+            # "No key provided cost"
     ])
 
-    # sensitivity.plot_sensitivities()
+    sensitivity.plot_sensitivities()
 
     # sensitivity.plot_bar_chart()
 
-    sensitivity.bar_chart_with_bounds()
+    # sensitivity.bar_chart_with_bounds()

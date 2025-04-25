@@ -1,5 +1,5 @@
 import sys
-sys.path.insert(0, '../trees')
+sys.path.insert(0, '/home/feruiloba/quant-project/trees')
 
 from abc import abstractmethod
 from city import City
