@@ -31,7 +31,8 @@ class Sensitivity():
 
         return strategies
 
-    def plot_sensitivity(self, property, percentages):
+    def plot_sensitivity(self, property, percentages, line_style):
+        line_styles = ['-', '--', '-.', ':']
         base_value = getattr(self.strategy.city, property)
         variations = self.get_variations_array(base_value, percentages)
         strategies = self.get_strategies_array(variations, property)
@@ -41,12 +42,12 @@ class Sensitivity():
 
     def plot_sensitivities(self):
         percentages = [i * 0.1 for i in range(-10, 10)]
-        for property in self.properties:
-            self.plot_sensitivity(property, percentages)
+        for line_style, property in enumerate(self.properties):
+            self.plot_sensitivity(property, percentages, line_style)
 
         plt.ticklabel_format(useOffset=False, style='plain')
         plt.xlabel('Change (%)')
-        plt.ylabel('Cost')
+        plt.ylabel('Expected Yearly Cost of Best Strategy')
         plt.title('Sensitivity Analysis')
         plt.legend(self.property_names)
         plt.grid(True)
@@ -73,15 +74,14 @@ class Sensitivity():
 
     @staticmethod
     def plot_bar_chart():
+        data = [
+                ['External + Insurance + User Training', 842921.6 * 4.16/1000000 ],
+                ['User Training', 6884621.15 * 0.736 / 1000000],
+                ['In House + User Training + Insurance', 2005383.3 * 4.16/1000000],
+                ['Baseline', 6884621.15 * 4.16 / 1000000]]
+
         # Sample data
-        df = pd.DataFrame(
-            data=[
-                ['Expert 1', 1668750],
-                ['Expert 2', 5419200],
-                ['Expert 3', 8059200],
-                ['Expert 5', 15750000],
-                ['Expert 6', 2340750]],
-                columns=["Expert", "Cost"])
+        df = pd.DataFrame(data=data, columns=["Expert", "Cost"])
 
         # Create the bar chart
         df.plot(x='Expert', kind='barh', figsize=(10, 6))
@@ -89,10 +89,13 @@ class Sensitivity():
         # Add title and labels
         plt.title('Yearly cost of ransomware attacks')
         plt.xlabel('Cost')
-        plt.ylabel('Experts')
+        plt.ylabel('Strategy package')
+        plt.xticks(range(0, int(df["Cost"].max()+5), 5))
+        plt.rcParams["font.size"] = 22
         plt.ticklabel_format(style='plain', axis='x')
 
         # Show the plot
+        plt.grid(True)
         plt.tight_layout()
         plt.show()
 
@@ -122,28 +125,29 @@ class Sensitivity():
         # 1. Data
         categories = ['Expert 1', 'Expert 2', 'Expert 3', 'Expert 5', 'Expert 6', 'Mean']
 
+        ransom = 4439000
         # (min, max) for each
         intervals = [
-            (1.223, 1.669),
-            (5.419, 5.419),
-            (2.819, 8.059),
-            (13.350, 15.75),
-            (2.341, 2.341),
-            (1.223, 15.75)
+            (18345 + ransom * 100 * 0.015, 25035 + ransom * 100 * 0.015),
+            (162570 + ransom * 100 * 0.03, 162570 + ransom * 100 * 0.03),
+            (42300 + ransom * 200 * 0.015, 120900 + ransom * 200 * 0.015),
+            (400500 + ransom * 250 * 0.03, 472500 + ransom * 250 * 0.03),
+            (70245 + ransom * 150 * 0.04, 70245 + ransom * 150 * 0.04),
+            (18345 + ransom * 160 * 0.038, 472500 + ransom * 160 * 0.038)
         ]
 
         # diamond markers for point estimates (x, idx, color)
         markers = [
-            (5.419,  1, "orange"),
-            (2.341,  4, "orange"),
-            (8.4865, 5, "blue")
+            (162570 + ransom * 100 * 0.03,  1, "orange"),
+            (70245 + ransom * 150 * 0.04,  4, "orange"),
+            (245422.5 + ransom * 160 * 0.038, 5, "blue")
         ]
 
         # indices of the bars that should be dashed‐outline (e.g. Geothermal, Coal, Nuclear)
         dashed_idx = [5]
 
         # 2. Plot
-        fig, ax = plt.subplots(figsize=(10, 6))
+        fig, ax = plt.subplots(figsize=(12, 6))
         y = list(range(len(categories)))
 
         # a) solid bars
@@ -176,17 +180,17 @@ class Sensitivity():
 
         # d) annotations
         for i, (mn, mx) in enumerate(intervals):
-            ax.text(mn-0.3, i, f"${mn}", va="center", ha="right") # color="white" if i not in dashed_idx else "gray"
+            ax.text(mn-4500, i, f"${mn}", va="center", ha="right") # color="white" if i not in dashed_idx else "gray"
             if i in dashed_idx or i not in [t[1] for t in markers]:
-                ax.text(mx+0.3, i, f"${mx}", va="center", ha="left")
+                ax.text(mx+4500, i, f"${mx}", va="center", ha="left")
 
         # 3. Styling
         ax.set_yticks(y)
         ax.set_yticklabels(categories)
         ax.invert_yaxis()           # so the first item is at the top
-        ax.set_xlim(-1, 18)
+        ax.set_xlim(6000000, 38000000)  # set x‐axis limits
         ax.set_xlabel("Total yearly cost (millions)")
-        plt.title("Distribution of total costs by expert")
+        plt.title("Distribution of yearly costs by expert (excluding ransom payment)")
         plt.ticklabel_format(style='plain', axis='x')
         plt.tight_layout()
         plt.show()
@@ -246,8 +250,8 @@ if __name__ == "__main__":
             # "No key provided cost"
     ])
 
-    sensitivity.plot_sensitivities()
+    # sensitivity.plot_sensitivities()
 
     # sensitivity.plot_bar_chart()
 
-    # sensitivity.bar_chart_with_bounds()
+    sensitivity.bar_chart_with_bounds()

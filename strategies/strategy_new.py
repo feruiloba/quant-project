@@ -108,7 +108,7 @@ class StrategyNew(Strategy):
         node_9c03659f_66f6_36f7_3ab7_d53ac2f7d970 = TerminalNode(name='_bf5a3', id='9c03659f-66f6-36f7-3ab7-d53ac2f7d970')
         node_data_leak_48217 = ChanceNode(name='data_leak_6bd3b', id='data_leak_48217', edges=[edge_leak_39160, edge_no_leak_7c43a])
         node_d45d94b0_302e_442d_5069_267cc52167ee = DecisionNode(name='external_it_securityinsurance_included_ad807', id='d45d94b0-302e-442d-5069-267cc52167ee', edges=[edge__045e5])
-        node_9bd785f6_e6fc_af5c_3eb9_b79e0d029cd7 = DecisionNode(name='strategy_packages_8cc2f', id='9bd785f6-e6fc-af5c-3eb9-b79e0d029cd7', edges=[edge__3e6e0, edge__34fa0, edge__c5c61])
+        node_9bd785f6_e6fc_af5c_3eb9_b79e0d029cd7 = DecisionNode(name='strategy_packages_8cc2f', id='9bd785f6-e6fc-af5c-3eb9-b79e0d029cd7', edges=[edge__3e6e0, edge__34fa0, edge__c5c61], top_node=True)
         edge__3e6e0.result_node = node_5738f723_e394_bab9_f925_2d38e48f1f2c
         edge__818b4.result_node = node_attack_8be44
         edge_yes_0cd08.result_node = node_4293311a_0094_2366_c8d9_8c99cbf2bbdc
