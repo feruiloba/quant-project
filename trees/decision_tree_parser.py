@@ -1,5 +1,5 @@
 import json
-from nodes import TerminalNode, DecisionNode, ChanceNode, DecisionEdge, ChanceEdge
+from trees.nodes import TerminalNode, DecisionNode, ChanceNode, DecisionEdge, ChanceEdge
 
 def create_decision_tree(file_name: str):
     # Parsing the JSON structure
@@ -62,5 +62,5 @@ def create_node(node_data):
 
 if __name__ == "__main__":
 
-    decision_tree = create_decision_tree("trees/decisiontree@2025.04.18_23.23.07.json")
+    decision_tree = create_decision_tree("trees/Tree_with_updatedProb_Insurance.json")
     decision_tree.print_tree_vars()

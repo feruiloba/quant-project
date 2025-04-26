@@ -1,5 +1,6 @@
 from abc import abstractmethod
 import uuid
+# from numpy import argmax
 
 def get_lower_case_no_dash(text: str):
     return text.lower().strip().replace(" ", "_").replace("-", "_").replace("?", "").replace("'", "").replace("(", "").replace(")", "").replace(",", "_")
@@ -105,16 +106,20 @@ class ChanceEdge(Edge):
         return self.probability * payoff
 
 class DecisionNode(Node):
-    def __init__(self, name, edges: list[DecisionEdge], override_decision: str = None, id: str = None):
+    def __init__(self, name, edges: list[DecisionEdge], override_decision: str = None, id: str = None, top_node: bool = False):
         super().__init__(name, id)
         self.edges = edges
         self.override_decision = override_decision
+        self.top_node = top_node
 
     def get_payoff(self):
         if self.override_decision != None:
             return next((edge.get_payoff() for edge in self.edges if edge.name == self.override_decision), 0)
 
-        return max(edge.get_payoff() for edge in self.edges)
+        payoffs = [edge.get_payoff() for edge in self.edges]
+        # if self.top_node:
+        #     print(self.edges[argmax(payoffs)].name)
+        return max(payoffs)
 
 class ChanceNode(Node):
     def __init__(self, name, edges: list[ChanceEdge], id: str = None):

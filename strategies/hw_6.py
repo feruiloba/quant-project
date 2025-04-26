@@ -1,4 +1,4 @@
-from nodes import ChanceEdge, ChanceNode, TerminalNode
+from trees.nodes import ChanceEdge, ChanceNode, TerminalNode
 
 edge_good_2b8a7 = ChanceEdge(name='good_e0e08', payoff=0, probability=0.75, id='good_23552')
 
